@@ -195,7 +195,7 @@ def fetch_image(url, retries=3, delay=10):
 FIXED_X = 263  # オーバーレイ画像のX座標
 FIXED_Y = 70  # オーバーレイ画像のY座標
 
-BASE_IMAGE_URL = 'https://media.discordapp.net/attachments/1247288750879281262/1262961206101020724/HNI_0028.JPG?ex=66992888&is=6697d708&hm=a6c0fb2601f5cb56d0e9897a745166ee766173382c57c4555a092007d69981c3&=&format=webp'  # ベース画像のURL
+BASE_IMAGE_URL = 'https://i.imgur.com/NmFfV1m.jpg'  # ベース画像のURL
 
 @bot.tree.command(name="overlay", description="ユーザーのアイコンと合成してちょっとしたコラ画像を作成します。（透過されているアイコンには不向きです。）")
 @app_commands.describe(target="ユーザーを選択してください")
