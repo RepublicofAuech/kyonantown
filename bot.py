@@ -8,14 +8,18 @@ from discord import app_commands
 from PIL import Image
 from io import BytesIO
 import time
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import threading
 
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
 
-#起動時に送信されるメッセージ
+# 起動時に送信されるメッセージ
 @bot.event
 async def on_ready():
     print("起動完了")
     await bot.tree.sync()
+    print("ローカルサーバーを起動中...")
+    start_server()
 
 #/avatar
 @bot.tree.command(name="avatar", description="このBOTのアバターを貼ります。")
@@ -83,7 +87,7 @@ async def ninsho(interaction: discord.Interaction, role_id: str):
     embed = discord.Embed(title="認証システム", description="以下のボタンを押して認証を完了してください。")
     await interaction.response.send_message(embed=embed, view=RoleView(role_id_int), ephemeral=False)
 
-# エラーハンドリング：ユーザーに管理者権限がない場合s
+# エラーハンドリング：ユーザーに管理者権限がない場合
 @ninsho.error
 async def ninsho_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError):
     if isinstance(error, discord.app_commands.errors.MissingPermissions):
@@ -214,5 +218,22 @@ async def overlay(interaction: discord.Interaction, target: discord.User):
     except Exception as e:
         await interaction.followup.send(f'エラーが発生しました。詳細: {e}', ephemeral=False)
         print(f'Unexpected error: {e}', ephemeral=False)
+
+# ローカルサーバーのハンドラ
+class RequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(b"Hello, this is the local server running!")
+
+# ローカルサーバーを開始する関数
+def start_server():
+    server_address = ('', 8080)  # ポート8080でサーバーを起動
+    httpd = HTTPServer(server_address, RequestHandler)
+    thread = threading.Thread(target=httpd.serve_forever)
+    thread.daemon = True
+    thread.start()
+    print("ローカルサーバーがポート8080で起動しました")
 
 bot.run(os.getenv("TOKEN"))
