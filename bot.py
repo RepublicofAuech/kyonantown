@@ -49,7 +49,7 @@ async def always_on(interaction: discord.Interaction):
 #/overlay_base
 @bot.tree.command(name="overlay_base", description="「/overlay」の元画像を貼ります。")
 async def overlay_base(interaction: discord.Interaction):
-    await interaction.response.send_message("https://media.discordapp.net/attachments/1239347707546439774/1263075159351361657/kyonantown.JPG?ex=669a3b68&is=6698e9e8&hm=4c01108dc78c500bc3e9ddedc90284888153fbfc0507bb33147690d5c4995428&=&format=webp")
+    await interaction.response.send_message("https://media.discordapp.net/attachments/1247288750879281262/1262961206101020724/HNI_0028.JPG?ex=66992888&is=6697d708&hm=a6c0fb2601f5cb56d0e9897a745166ee766173382c57c4555a092007d69981c3&=&format=webp")
 
 class VerifyButton(discord.ui.Button):
     def __init__(self, role_id: int):
@@ -126,7 +126,7 @@ async def thumbnail(interaction: discord.Interaction, url: str):
             print(error)
             await interaction.response.send_message('サムネイルの保存に失敗しました\nhttps://media.discordapp.net/attachments/1250065175663349760/1261656589765709824/quote_1261656563060314132.png?ex=6693c0c3&is=66926f43&hm=cfd2c2925aa7240491b71b1bb9fb4ff101075a8d0dedb5bf0bab043899461397&=&format=webp&quality=lossless', ephemeral=True)
     else:
-        await interaction.response.send_message('無効なURLです\nhttps://media.discordapp.net/attachments/1250065175663349760/1261657030419157042/quote_1261657004590497853.png?ex=6693c12c&is=66926fac&hm=75c9020827e61664ec1cd60a347162c5d67eefba28788d5f3861c19f9f21c7ed&=&format=webp&quality=lossless', ephemeral=True)
+        await interaction.response.send_message('無効なYouTubeのURLです\nhttps://media.discordapp.net/attachments/1250065175663349760/1261657030419157042/quote_1261657004590497853.png?ex=6693c12c&is=66926fac&hm=75c9020827e61664ec1cd60a347162c5d67eefba28788d5f3861c19f9f21c7ed&=&format=webp&quality=lossless', ephemeral=True)
 
 def get_youtube_video_id(url):
     match = re.match(r'(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]{11})', url)
@@ -175,7 +175,7 @@ def fetch_image(url, retries=3, delay=10):
 FIXED_X = 263  # オーバーレイ画像のX座標
 FIXED_Y = 70  # オーバーレイ画像のY座標
 
-BASE_IMAGE_URL = 'https://cdn.discordapp.com/attachments/1239347707546439774/1263075159351361657/kyonantown.JPG?ex=6698e9e8&is=66979868&hm=75e1695d4cbed45bc7f87eab8c8561466c11c9399cfaec4f37425e674396f851&'  # ベース画像のURL
+BASE_IMAGE_URL = 'https://media.discordapp.net/attachments/1247288750879281262/1262961206101020724/HNI_0028.JPG?ex=66992888&is=6697d708&hm=a6c0fb2601f5cb56d0e9897a745166ee766173382c57c4555a092007d69981c3&=&format=webp'  # ベース画像のURL
 
 @bot.tree.command(name="overlay", description="ユーザーのアイコンと合成してちょっとしたコラ画像を作成します。（透過されているアイコンには不向きです。）")
 @app_commands.describe(target="ユーザーを選択してください")
@@ -211,13 +211,13 @@ async def overlay(interaction: discord.Interaction, target: discord.User):
 
     except requests.exceptions.RequestException as e:
         await interaction.followup.send(f'画像を取得中にエラーが発生しました。詳細: {e}', ephemeral=False)
-        print(f'Error fetching image: {e}', ephemeral=False)
+        print(f'Error fetching image: {e}')
     except IOError as e:
         await interaction.followup.send(f'画像の処理中にエラーが発生しました。詳細: {e}', ephemeral=False)
-        print(f'Error processing image: {e}', ephemeral=False)
+        print(f'Error processing image: {e}')
     except Exception as e:
         await interaction.followup.send(f'エラーが発生しました。詳細: {e}', ephemeral=False)
-        print(f'Unexpected error: {e}', ephemeral=False)
+        print(f'Unexpected error: {e}')
 
 # ローカルサーバーのハンドラ
 class RequestHandler(BaseHTTPRequestHandler):
