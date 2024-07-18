@@ -24,7 +24,7 @@ async def on_ready():
 #/avatar
 @bot.tree.command(name="avatar", description="このBOTのアバターを貼ります。")
 async def avatar(interaction: discord.Interaction):
-    await interaction.response.send_message("https://media.discordapp.net/attachments/1239347707546439774/1263075159351361657/kyonantown.JPG?ex=669a3b68&is=6698e9e8&hm=4c01108dc78c500bc3e9ddedc90284888153fbfc0507bb33147690d5c4995428&=&format=webp")
+    await interaction.response.send_message("https://media.discordapp.net/attachments/1250198739872776254/1259624992753057792/6ce16e7b820c7557.png?ex=668c5cb0&is=668b0b30&hm=342176d809170afe96f86deb21f922df08e40a614b4d5f02c00cd2eb48eb68f1&=&format=webp&quality=lossless&width=671&height=671")
 
 #/kyonan_town
 @bot.tree.command(name="kyonan_town", description="鋸南町の詳細を説明します。")
@@ -49,7 +49,7 @@ async def always_on(interaction: discord.Interaction):
 #/overlay_base
 @bot.tree.command(name="overlay_base", description="「/overlay」の元画像を貼ります。")
 async def overlay_base(interaction: discord.Interaction):
-    await interaction.response.send_message("https://media.discordapp.net/attachments/1247288750879281262/1262961206101020724/HNI_0028.JPG?ex=66992888&is=6697d708&hm=a6c0fb2601f5cb56d0e9897a745166ee766173382c57c4555a092007d69981c3&=&format=webp")
+    await interaction.response.send_message("https://media.discordapp.net/attachments/1239347707546439774/1263075159351361657/kyonantown.JPG?ex=669a3b68&is=6698e9e8&hm=4c01108dc78c500bc3e9ddedc90284888153fbfc0507bb33147690d5c4995428&=&format=webp")
 
 class VerifyButton(discord.ui.Button):
     def __init__(self, role_id: int):
