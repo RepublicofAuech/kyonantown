@@ -195,7 +195,7 @@ def fetch_image(url, retries=3, delay=10):
 FIXED_X = 263  # オーバーレイ画像のX座標
 FIXED_Y = 70  # オーバーレイ画像のY座標
 
-BASE_IMAGE_URL = 'https://i.imgur.com/NmFfV1m.jpg'  # ベース画像のURL
+BASE_IMAGE_URL = 'https://i.ibb.co/1XZvZZw/kyonantown.jpg'  # ベース画像のURL
 
 @bot.tree.command(name="overlay", description="ユーザーのアイコンと合成してちょっとしたコラ画像を作成します。（透過されているアイコンには不向きです。）")
 @app_commands.describe(target="ユーザーを選択してください")
