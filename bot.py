@@ -13,6 +13,9 @@ import threading
 
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
 
+# 認証ボタンを保存するリスト
+verification_buttons = []
+
 # 起動時に送信されるメッセージ
 @bot.event
 async def on_ready():
@@ -20,6 +23,20 @@ async def on_ready():
     await bot.tree.sync()
     print("ローカルサーバーを起動中...")
     start_server()
+    # サーバーから認証ボタンを再生成
+    await regenerate_verification_buttons()
+
+# 認証ボタンを再生成する関数
+async def regenerate_verification_buttons():
+    for role_id in verification_buttons:
+        embed = discord.Embed(title="認証システム", description="以下のボタンを押して認証を完了してください。")
+        view = RoleView(role_id)
+        # サーバー内の管理者にメッセージを送信（適宜変更）
+        for guild in bot.guilds:
+            try:
+                await guild.text_channels[0].send(embed=embed, view=view)
+            except Exception as e:
+                print(f'Error sending verification message: {e}')
 
 #/avatar
 @bot.tree.command(name="avatar", description="このBOTのアバターを貼ります。")
@@ -49,7 +66,7 @@ async def always_on(interaction: discord.Interaction):
 #/overlay_base
 @bot.tree.command(name="overlay_base", description="「/overlay」の元画像を貼ります。")
 async def overlay_base(interaction: discord.Interaction):
-    await interaction.response.send_message("https://media.discordapp.net/attachments/1247288750879281262/1262961206101020724/HNI_0028.JPG?ex=66992888&is=6697d708&hm=a6c0fb2601f5cb56d0e9897a745166ee766173382c57c4555a092007d69981c3&=&format=webp")
+    await interaction.response.send_message("https://i.imgur.com/NmFfV1m.jpg")
 
 class VerifyButton(discord.ui.Button):
     def __init__(self, role_id: int):
@@ -80,6 +97,8 @@ class RoleView(discord.ui.View):
 async def ninsho(interaction: discord.Interaction, role_id: str):
     try:
         role_id_int = int(role_id)
+        # 保存するリストに役職IDを追加
+        verification_buttons.append(role_id_int)
     except ValueError:
         await interaction.response.send_message("有効な整数のロールIDを入力してください。", ephemeral=True)
         return
@@ -128,8 +147,9 @@ async def thumbnail(interaction: discord.Interaction, url: str):
     else:
         await interaction.response.send_message('無効なYouTubeのURLです\nhttps://media.discordapp.net/attachments/1250065175663349760/1261657030419157042/quote_1261657004590497853.png?ex=6693c12c&is=66926fac&hm=75c9020827e61664ec1cd60a347162c5d67eefba28788d5f3861c19f9f21c7ed&=&format=webp&quality=lossless', ephemeral=True)
 
-def get_youtube_video_id(url):
-    match = re.match(r'(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]{11})', url)
+def get_youtube_video_id(url: str) -> str:
+    pattern = r'(?:https?://)?(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/)([\w-]+)'
+    match = re.match(pattern, url)
     return match.group(1) if match else None
 
 # じゃんけんのオプション
@@ -220,20 +240,18 @@ async def overlay(interaction: discord.Interaction, target: discord.User):
         print(f'Unexpected error: {e}')
 
 # ローカルサーバーのハンドラ
-class RequestHandler(BaseHTTPRequestHandler):
+class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
-        self.send_header('Content-type', 'text/html')
+        self.send_header("Content-type", "text/html")
         self.end_headers()
-        self.wfile.write(b"Hello, this is the local server running!")
+        self.wfile.write(b"Hello, World!")
 
 # ローカルサーバーを開始する関数
 def start_server():
-    server_address = ('', 8080)  # ポート8080でサーバーを起動
-    httpd = HTTPServer(server_address, RequestHandler)
-    thread = threading.Thread(target=httpd.serve_forever)
-    thread.daemon = True
-    thread.start()
+    server_address = ('', 8080)
+    httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
     print("ローカルサーバーがポート8080で起動しました")
 
 bot.run(os.getenv("TOKEN"))
