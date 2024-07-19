@@ -43,6 +43,14 @@ async def regenerate_verification_buttons():
 async def avatar(interaction: discord.Interaction):
     await interaction.response.send_message("https://media.discordapp.net/attachments/1250198739872776254/1259624992753057792/6ce16e7b820c7557.png?ex=668c5cb0&is=668b0b30&hm=342176d809170afe96f86deb21f922df08e40a614b4d5f02c00cd2eb48eb68f1&=&format=webp&quality=lossless&width=671&height=671")
 
+@bot.tree.command(name="server_icon", description="鯖のアイコンを貼ります。")
+async def server_icon(interaction: discord.Interaction):
+    guild = interaction.guild
+    if guild.icon:
+        await interaction.response.send_message(guild.icon.url)
+    else:
+        await interaction.response.send_message("このサーバーにはアイコンが設定されていません")
+
 #/kyonan_town
 @bot.tree.command(name="kyonan_town", description="鋸南町の詳細を説明します。")
 async def kyonan_town(interaction: discord.Interaction):
